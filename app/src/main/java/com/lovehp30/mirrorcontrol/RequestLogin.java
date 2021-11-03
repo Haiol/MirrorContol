@@ -16,8 +16,8 @@ import org.json.JSONObject;
 import java.io.InputStream;
 
 public class RequestLogin {
-    public static boolean IPVerify;
-    public static boolean APIVerify;
+    private static boolean IPVerify;
+    private static boolean APIVerify;
     public void VerifyIP(String ip, Context context){
         String url = "http://"+ip+":8080/api/test";
         StringRequest request = new StringRequest(
