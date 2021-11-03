@@ -21,6 +21,7 @@
             android:id="@+id/et_ipAddress"
             android:inputType="number|numberDecimal"
             android:digits="0123456789."
+            android:hint="MirrorAddress"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
 
@@ -28,7 +29,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/et_APIkey"
-            android:hint="Password"
+            android:hint="APIKey"
             android:inputType="textPassword"
             android:layout_below="@+id/et_ipAddress"
             android:layout_alignParentStart="true" />
