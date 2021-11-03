@@ -5,49 +5,84 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
     EditText ipAddress, APIkey;
+    CheckBox checkBox;
 
-@Override
-protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 //        getActionBar().hide();
         ipAddress = findViewById(R.id.et_ipAddress);
-
         APIkey = findViewById(R.id.et_APIkey);
+        checkBox = findViewById(R.id.cb_rememberMe);
 
-    InputFilter[] filters = new InputFilter[1];
-    filters[0] = new InputFilter() {
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            if (end > start) {
-                String destTxt = dest.toString();
-                String resultingTxt = destTxt.substring(0, dstart) + source.subSequence(start, end) + destTxt.substring(dend);
-                if (!resultingTxt.matches ("^\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3})?)?)?)?)?)?")) {
-                    return "";
-                } else {
-                    String[] splits = resultingTxt.split("\\.");
-                    for (int i=0; i<splits.length; i++) {
-                        if (Integer.valueOf(splits[i]) > 255) {
-                            return "";
+        //Input filter IPAddress
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter() {
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                if (end > start) {
+                    String destTxt = dest.toString();
+                    String resultingTxt = destTxt.substring(0, dstart) + source.subSequence(start, end) + destTxt.substring(dend);
+                    if (!resultingTxt.matches("^\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3})?)?)?)?)?)?")) {
+                        return "";
+                    } else {
+                        String[] splits = resultingTxt.split("\\.");
+                        for (int i = 0; i < splits.length; i++) {
+                            if (Integer.valueOf(splits[i]) > 255) {
+                                return "";
+                            }
                         }
                     }
                 }
+                return null;
             }
-            return null;
+        };
+        ipAddress.setFilters(filters);
+        // CheckBox Memorized
+        SharedPreferences sf  = getSharedPreferences("File",MODE_PRIVATE);
+        String text1 = sf.getString("ip","");
+        String text2 = sf.getString("key","");
+        if(!text1.equals(""))
+            checkBox.setChecked(true);
+        APIkey.setText(text1);
+        APIkey.setText(text2);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //CheckBox MEMO KEY
+        SharedPreferences sharedPreferences = getSharedPreferences("File",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(checkBox.isChecked()){
+            String text1 = APIkey.getText().toString();
+            String text2 = ipAddress.getText().toString();
+
+            editor.putString("api",text1);
+            editor.putString("ip",text2);
         }
-    };
-    ipAddress.setFilters(filters);
-}
+        else {
+            editor.putString("api", "");
+            editor.putString("ip", "");
+        }
+        editor.commit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,14 +108,21 @@ protected void onCreate(Bundle savedInstanceState) {
 
     public void Login_Click(final View view) throws InterruptedException {
         final ProgressDialog myProgressDialog = ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
+        RequestLogin requestLogin = new RequestLogin();
 
         // start async task to wait for 5 second that update the view
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
+                    requestLogin.VerifyIP("lovehp12.duckdns.org",getApplicationContext());
+                    requestLogin.VerifyAPI("lovehp12.duckdns.org","0bb2a5ddbc354cc5be0a24d120c4c289",getApplicationContext());
+
+//                    requestLogin.VerifyIP(ipAddress.getText().toString(),getApplicationContext());
+//                    requestLogin.VerifyAPI(ipAddress.getText().toString(),APIkey.getText().toString(),getApplicationContext());
+
+                    Thread.sleep(2500);
+                } catch (Exception e) {
                     // TODO Auto-generated catch block
                 }
                 return null;
@@ -88,18 +130,25 @@ protected void onCreate(Bundle savedInstanceState) {
 
             @Override
             protected void onPostExecute(Void result) {
-                myProgressDialog.hide();
-                StartLoginTemplate();
+                Log.e("LOGIN",RequestLogin.APIVerify+" "+RequestLogin.IPVerify+" "+requestLogin.getLoginStatus());
+                if(requestLogin.getLoginStatus()) {
+                    myProgressDialog.hide();
+                    StartLoginTemplate();
+                }
+                else{
+                    myProgressDialog.hide();
+                    Toast.makeText(getBaseContext(),"Fail to Login",Toast.LENGTH_SHORT ).show();
+                }
             }
         };
         task.execute((Void[]) null);
     }
 
-    public void StartLoginTemplate(){
+    public void StartLoginTemplate() {
         Intent intent = new Intent(this, MainActivity.class);
 
         String username = ((EditText) findViewById(R.id.et_ipAddress)).getText().toString();
-        intent.putExtra("username",username);
+        intent.putExtra("username", username);
 
         ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         startActivity(intent);
