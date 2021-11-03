@@ -1,9 +1,18 @@
 package com.lovehp30.mirrorcontrol;
 
+import android.annotation.SuppressLint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Toast;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -21,10 +30,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer;
+    ActionBar actionBar;
+    FloatingActionButton fab;
+    Animation fadeInAnim,fadeOutAnim;
+    Drawable menu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +47,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu_slideshow);
+
+
+
+        actionBar = getSupportActionBar();
+        menu = this.getResources().getDrawable(R.drawable.ic_menu_slideshow);
+
+        actionBar.setHomeAsUpIndicator(menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-         drawer = findViewById(R.id.drawer_layout);
+
+
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -58,10 +72,59 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /// 메뉴 생성-------------
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        //Float----
+
+
         Fragment fragment1 = new Test2Fragment();
         ViewPager2 pager2 = findViewById(R.id.viewPager);
         MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
         pager2.setAdapter(adapter);
+        pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @SuppressLint("RestrictedApi")
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                Log.e("Scroll",position+" "+positionOffset+" "+positionOffsetPixels);
+                if(position ==0 && positionOffset ==0) {
+                    fab.setVisibility(View.INVISIBLE);
+                }
+                else if(position==0 && positionOffset>0){
+                    fab.setVisibility(View.VISIBLE);
+                    fab.setAlpha(positionOffset);
+                }else if(position==1 && positionOffset==0){
+
+                }else{
+
+                }
+            }
+
+//            @Override
+//            public void onPageSelected(int position) {
+//                super.onPageSelected(position);
+//                if(position == 0){
+//                    actionBar.setDisplayHomeAsUpEnabled(true);
+//
+//                    fab.startAnimation(fadeOutAnim);
+//                    fab.setVisibility(View.INVISIBLE);
+//                }else{
+//                    actionBar.setDisplayHomeAsUpEnabled(false);
+//                    fab.startAnimation(fadeInAnim);
+//                    fab.setVisibility(View.VISIBLE);
+//                }
+////                Toast.makeText(getApplicationContext(),position+"",Toast.LENGTH_SHORT).show();
+//            }
+        });
+
+        //        ViewPager2
 
 
 

@@ -31,4 +31,6 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 2;
     }
+
+
 }
