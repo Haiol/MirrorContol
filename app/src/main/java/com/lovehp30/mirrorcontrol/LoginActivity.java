@@ -146,9 +146,11 @@ public class LoginActivity extends AppCompatActivity {
     public void StartLoginTemplate() {
         Intent intent = new Intent(this, MainActivity.class);
 
-        String username = ((EditText) findViewById(R.id.et_ipAddress)).getText().toString();
-        intent.putExtra("username", username);
+        String ip = ipAddress.getText().toString();
+        String api = APIkey.getText().toString();
 
+        intent.putExtra("ip",ip);
+        intent.putExtra("api",api);
         ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
         startActivity(intent);
 
