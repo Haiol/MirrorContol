@@ -130,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Void result) {
-                Log.e("LOGIN",RequestLogin.APIVerify+" "+RequestLogin.IPVerify+" "+requestLogin.getLoginStatus());
                 if(requestLogin.getLoginStatus()) {
                     myProgressDialog.hide();
                     StartLoginTemplate();
