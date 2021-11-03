@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +20,8 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class MainActivity extends AppCompatActivity {
     DrawerLayout drawer;
@@ -54,12 +57,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-////        // Passing each menu ID as a set of Ids because each
-////        // menu should be considered as top level destinations.
-//        mAppBarConfiguration = new AppBarConfiguration.Builder().setDrawerLayout(drawer).build();
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-//        NavigationUI.setupWithNavController(navigationView, navController);
+        /// 메뉴 생성-------------
+        Fragment fragment1 = new Test2Fragment();
+        ViewPager2 pager2 = findViewById(R.id.viewPager);
+        MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
+        pager2.setAdapter(adapter);
+
+
+
+
     }
 
     @Override
