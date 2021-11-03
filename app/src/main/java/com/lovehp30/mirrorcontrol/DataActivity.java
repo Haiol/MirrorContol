@@ -1,11 +1,16 @@
 package com.lovehp30.mirrorcontrol;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextPaint;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magicgoop.tagsphere.OnTagTapListener;
@@ -20,33 +25,57 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DataActivity extends AppCompatActivity {
-    TagSphereView tagSphereView;
-
+    String Client_code = "TestWemos01";
+    String Topics = "Sensor";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
-        String[] list =
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rutrum mollis interdum. Donec imperdiet condimentum faucibus. Aliquam vel ex pulvinar, consectetur mi ac, scelerisque lorem. Suspendisse sit amet bibendum orci. In quis nisl dapibus, faucibus tellus sit amet, venenatis lorem. Donec luctus luctus ultrices. In tellus diam, gravida vitae pellentesque et, tristique eu nisl. Donec pretium erat sed augue lobortis consectetur. Quisque et eleifend tortor.Ut blandit fermentum cursus. Aliquam at rhoncus nisi, et consectetur est. Quisque malesuada est leo, in cursus magna consectetur at. Cras et volutpat justo. Vestibulum condimentum dictum molestie. Phasellus aliquam, diam sed interdum commodo, diam purus egestas massa, in dictum tortor erat quis dolor. Donec dapibus dolor quis mi commodo finibus. Vivamus fermentum tellus nulla, iaculis pharetra urna elementum in."
-                        .replace("[^a-zA-Z\\s]", "")
-                        .replace("\\s+", " ")
-                        .split(" ");
+        Toolbar toolbar = findViewById(R.id.dt_toolbar);
+        TextView subtitle = findViewById(R.id.dt_subtitle);
+        subtitle.setText(Topics);
+        toolbar.setTitle(Client_code);
+        setSupportActionBar(toolbar);
+        ViewPager2 pager = findViewById(R.id.dt_viewpager);
+        DataActViewAdapter adapter = new DataActViewAdapter(getSupportFragmentManager(),getLifecycle());
+        pager.setAdapter(adapter);
 
-        tagSphereView = findViewById(R.id.tagView);
-        TextPaint paint = new TextPaint();
-        paint.setAntiAlias(true);
-        paint.setTextSize(40f);
-        paint.setColor(Color.BLACK);
-        List<TextTagItem> item = new ArrayList<>();
-        for(String s: list)
-            item.add(new TextTagItem(s));
-        tagSphereView.setTextPaint(paint);
-        tagSphereView.addTagList(item);
-        tagSphereView.setRadius(2.5f);
-        tagSphereView.setOnTagTapListener(new OnTagTapListener() {
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        final ProgressDialog myProgressDialog = ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
+        RequestData requestData = new RequestData(Client_code,Topics,getBaseContext());
+
+        // start async task to wait for 5 second that update the view
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
             @Override
-            public void onTap(@NotNull TagItem tagItem) {
+            protected Void doInBackground(Void... params) {
+                try {
+                    requestData.getJsonData();
+
+//                    requestLogin.VerifyIP(ipAddress.getText().toString(),getApplicationContext());
+//                    requestLogin.VerifyAPI(ipAddress.getText().toString(),APIkey.getText().toString(),getApplicationContext());
+
+                    Thread.sleep(2500);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                }
+                return null;
             }
-        });
+
+            @Override
+            protected void onPostExecute(Void result) {
+
+                myProgressDialog.hide();
+
+
+            }
+        };
+        task.execute((Void[]) null);
     }
 }
