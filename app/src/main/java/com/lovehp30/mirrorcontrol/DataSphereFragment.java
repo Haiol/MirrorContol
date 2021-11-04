@@ -21,7 +21,6 @@ import com.magicgoop.tagsphere.TagSphereView;
 import com.magicgoop.tagsphere.item.TagItem;
 import com.magicgoop.tagsphere.item.TextTagItem;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
