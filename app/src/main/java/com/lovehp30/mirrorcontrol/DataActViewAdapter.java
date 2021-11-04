@@ -7,16 +7,19 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class DataActViewAdapter extends FragmentStateAdapter {
-
-    public DataActViewAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    String client_code;
+    String topics;
+    public DataActViewAdapter(String client_code, String topics, @NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
+        this.client_code = client_code;
+        this.topics = topics;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         if(position==0)
-            return new DataSphereFragment();
+            return new DataSphereFragment().putID(client_code,topics);
         else
             return new DataGraphFragment();
     }

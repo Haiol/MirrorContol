@@ -9,6 +9,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +26,7 @@ import java.util.List;
 public class DataActivity extends AppCompatActivity {
     String Client_code = "TestWemos01";
     String Topics = "Sensor";
-
+    public static String ip ="lovehp12.duckdns.org";;
     RequestData requestData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,55 +40,38 @@ public class DataActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ViewPager2 pager = findViewById(R.id.dt_viewpager);
         // ToolBar Setting
-
+        List<SensorDataFormat> list = new ArrayList<>();
         final ProgressDialog myProgressDialog = ProgressDialog.show(this, "Gathering the Your Data", "please Wait..", true);
-        requestData = new RequestData(Client_code, Topics, this);
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected void onPreExecute() {
-                try {
-                    requestData.getJsonNowData();
-                    requestData.getJson7Data();
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                }
-            }
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://"+ip+":3000/getData/"+Client_code+"/7Days";
+        Log.e("JSON_in",url);
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                response ->  {
+                    try{
+                        JSONArray array = new JSONArray(response);
+                        for(int i=0;i<array.length();i++){
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(2000);
+                        }
 
-                    JSONArray test = requestData.getNowData();
-                    Log.e("LIST",test.toString());
-                    List<SensorDataFormat> list = new ArrayList<>();
-
-                    for (int i = 0; i < test.length(); i++) {
-
-                        JSONObject object = test.getJSONObject(i);
-                        list.add(new SensorDataFormat(object.getString("clientID"),object.getString("message"),object.getString("time")));
+                    }catch (JSONException e){
+                        e.printStackTrace();
                     }
-                    Log.e("LIST",list.get(0).getMessages().toString());
+
+                    myProgressDialog.dismiss();
+                },
+                error -> {
+                    Toast.makeText(this,"Fail to load data...",Toast.LENGTH_SHORT);
+                    myProgressDialog.dismiss();
 
 
-                } catch (InterruptedException | JSONException e) {
-                    e.printStackTrace();
                 }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                myProgressDialog.dismiss();
-            }
-        };
-        task.execute();
-        //get to the JSONData
-
-
+        );
+        queue.add(request);
 
         //Json 분석
-        DataActViewAdapter adapter = new DataActViewAdapter(getSupportFragmentManager(), getLifecycle());
+        DataActViewAdapter adapter = new DataActViewAdapter(Client_code,Topics,getSupportFragmentManager(), getLifecycle());
         pager.setAdapter(adapter);
 
     }
