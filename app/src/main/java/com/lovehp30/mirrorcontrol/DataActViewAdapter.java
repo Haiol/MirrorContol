@@ -7,7 +7,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class DataActViewAdapter extends FragmentStateAdapter {
-    public int mCount;
 
     public DataActViewAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
@@ -16,7 +15,10 @@ public class DataActViewAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-      return null;
+        if(position==0)
+            return new DataSphereFragment();
+        else
+            return new DataGraphFragment();
     }
 
 
@@ -27,7 +29,7 @@ public class DataActViewAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 2;
     }
 
 
