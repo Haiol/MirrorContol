@@ -14,7 +14,6 @@ public class RequestData {
     private String Client_code;
     private String Topics;
     private Context context;
-
     public JSONArray nowData,days7Data;
     public RequestData(String Client_code,String Topics, Context context){
         ip = "lovehp12.duckdns.org";
