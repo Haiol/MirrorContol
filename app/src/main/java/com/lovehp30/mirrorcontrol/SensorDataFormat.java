@@ -1,0 +1,41 @@
+package com.lovehp30.mirrorcontrol;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class SensorDataFormat {
+    private String messages;
+    private String time;
+    private String code;
+
+    private Map<String,Float> map = new HashMap<>();
+    SensorDataFormat(String code,String messages,String time){
+        this.messages = messages;
+        this.time = time;
+        this.code = code;
+        String str[] = messages.split(",");
+        for(String s:str){
+            String[] token = s.split(":");
+            Float data = token[1].equals("nan")?-999:Float.valueOf(token[1]);
+            map.put(token[0],data);
+        }
+    }
+
+    public String getMessages(){
+        return messages;
+    }
+    public Float getValuesOfToken(String Key){
+        return map.get(Key);
+    }
+    public String[] getMapKeyList(){
+        return map.keySet().toArray(new String[map.size()]);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getTime() {
+        return time;
+    }
+}

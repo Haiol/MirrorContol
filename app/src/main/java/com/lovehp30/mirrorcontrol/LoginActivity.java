@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void Login_Click(final View view) throws InterruptedException {
+    public void Login_Click(final View view) {
         final ProgressDialog myProgressDialog = ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
         RequestLogin requestLogin = new RequestLogin();
 
