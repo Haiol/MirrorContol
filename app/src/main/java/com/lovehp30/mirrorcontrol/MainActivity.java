@@ -1,6 +1,7 @@
 package com.lovehp30.mirrorcontrol;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -51,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         actionBar = getSupportActionBar();
-        menu = this.getResources().getDrawable(R.drawable.ic_menu_slideshow);
-
-        actionBar.setHomeAsUpIndicator(menu);
+        menu = this.getResources().getDrawable(R.drawable.bar_menu);
+        Bitmap bitmap = ((BitmapDrawable) menu).getBitmap();
+        Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 70, 70, true));
+        actionBar.setHomeAsUpIndicator(d);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
@@ -76,8 +80,23 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                //Make snackbar
+                Snackbar snackbar = Snackbar.make(view,"",Snackbar.LENGTH_INDEFINITE);
+                Snackbar.SnackbarLayout sLayout = (Snackbar.SnackbarLayout)snackbar.getView();
+
+                View snackView = getLayoutInflater().inflate(R.layout.exit_snackbar, null);
+                Button button = snackView.findViewById(R.id.sb_ok);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                sLayout.addView(snackView,0);
+                snackbar.show();
+
             }
         });
 
@@ -96,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Scroll",position+" "+positionOffset+" "+positionOffsetPixels);
                 if(position ==0 && positionOffset ==0) {
                     fab.setVisibility(View.INVISIBLE);
+                    toolbar.setTitle("MirrorControl");
+
                 }
                 else if(position==0 && positionOffset>0){
                     fab.setVisibility(View.VISIBLE);
@@ -103,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 }else if(position==1 && positionOffset==0){
 
                 }else{
-
+                    toolbar.setTitle("SearchData");
                 }
             }
 

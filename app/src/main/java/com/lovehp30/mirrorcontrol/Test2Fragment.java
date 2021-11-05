@@ -35,11 +35,7 @@ public class Test2Fragment extends Fragment {
         super.onCreate(savedInstanceState);
         datas = new ArrayList<ListViewItem>();
         datas.add(new ListViewItem("TestWemos01","Sensor"));
-        datas.add(new ListViewItem("Test01","Test01"));
-        datas.add(new ListViewItem("Test02","Test02"));
-        datas.add(new ListViewItem("Test03","Test03"));
-        datas.add(new ListViewItem("Test04","Test04"));
-        datas.add(new ListViewItem("Test05","Test05"));
+
 
     }
 

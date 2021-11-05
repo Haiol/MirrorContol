@@ -11,14 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -51,7 +57,7 @@ public class DataGraphFragment extends Fragment {
      * @return A new instance of fragment DataGraphFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DataGraphFragment newInstance(String[] time, String[] data,String title) {
+    public static DataGraphFragment newInstance(String[] time, String[] data, String title) {
         DataGraphFragment fragment = new DataGraphFragment();
         Bundle args = new Bundle();
         args.putStringArray(ARG_PARAM1, time);
@@ -80,16 +86,24 @@ public class DataGraphFragment extends Fragment {
         LineChart chart = v.findViewById(R.id.chart);
         chart.invalidate();//초기화
         chart.clear();
-        //data
-        
-
-
-        //data
         ArrayList<Entry> values = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            float val = (float) (Math.random() * 10);
-            values.add(new Entry(i, val));
-        }//Test data
+
+        //data
+        for (int i = 0; i < data.length; i++) {
+            long x = DateToMill(time[i]);
+            String temp = data[i].split(":")[1];
+            if(!temp.equals("nan")){
+                float val = Float.valueOf(temp);
+                values.add(new Entry(x, val)); //x : time y : data
+            }
+        }
+        String days[] = {"일요일","월요일","화요일","수요일","목요일","금요일","토요일"};
+
+//        //data
+//        for (int i = 0; i < 10; i++) {
+//            float val = (float) (Math.random() * 10);
+//            values.add(new Entry(i, val)); //x : time y : data
+//        }//Test data
         LineDataSet lineDataset = new LineDataSet(values, title);
         lineDataset.setColor(ContextCompat.getColor(getContext(), R.color.primary)); //LineChart에서 Line Color 설정
         lineDataset.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary)); // LineChart에서 Line Circle Color 설정
@@ -104,10 +118,18 @@ public class DataGraphFragment extends Fragment {
         // x축 설정
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.TOP);
-//        xAxis.setValueFormatter(new Chart);
-        // y출 설정
-        YAxis yAxisLeft = chart.getAxisLeft();
+        xAxis.setLabelCount(8);
+        xAxis.setGranularity(1f);
+        xAxis.setCenterAxisLabels(false);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                Date date = new Date((long) value);
 
+                return days[date.getDay()];
+            }
+        });
+        // y출 설정
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setDrawLabels(false);
         yAxisRight.setDrawAxisLine(false);
@@ -141,5 +163,23 @@ public class DataGraphFragment extends Fragment {
 //        // set data
 //        chart.setData(data);
         return v;
+    }
+    public String MillToDate(long mills) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        String date = (String) formatter.format(new Timestamp(mills));
+        return date;
+    }
+
+    public long DateToMill(String date) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        Date trans_date = null;
+        try {
+            trans_date = formatter.parse(date);
+        } catch (ParseException e) { // TODO Auto-generated catch block e.printStackTrace(); } return trans_date.getTime(); }
+            e.printStackTrace();
+        }
+        return trans_date.getTime();
     }
 }
