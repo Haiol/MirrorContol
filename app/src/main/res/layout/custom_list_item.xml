@@ -35,11 +35,12 @@
 
         </LinearLayout>
         <ImageView
-            android:layout_width="wrap_content"
+            android:id="@+id/del_Btn"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:layout_gravity="center|left"
-            android:src="@drawable/ic_menu_slideshow"/>
+            android:src="@drawable/trash"/>
 
     </LinearLayout>
 </LinearLayout>

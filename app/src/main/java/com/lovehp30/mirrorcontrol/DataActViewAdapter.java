@@ -48,13 +48,13 @@ public class DataActViewAdapter extends FragmentStateAdapter {
         if(position==0)
             return new DataSphereFragment().putID(client_code,topics);
         else if(position == 1)
-            return  new DataGraphFragment().newInstance(time,data[0],label[0]);
+            return  new DataGraphFragment().newInstance(time,data[1],label[1]);
 //        for(int i=1;i<cnt-1;i++)
 //            if(position==i) {
 //                return new DataGraphFragment();
 //            }
         else
-            return new DataGraphFragment().newInstance(time,data[1],label[1]);
+            return new DataGraphFragment().newInstance(time,data[0],label[0]);
     }
 
 
