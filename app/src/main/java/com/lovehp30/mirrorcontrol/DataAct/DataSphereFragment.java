@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.DataAct;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,15 +10,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.magicgoop.tagsphere.OnTagTapListener;
+import com.lovehp30.mirrorcontrol.R;
 import com.magicgoop.tagsphere.TagSphereView;
-import com.magicgoop.tagsphere.item.TagItem;
 import com.magicgoop.tagsphere.item.TextTagItem;
 
 import org.json.JSONArray;

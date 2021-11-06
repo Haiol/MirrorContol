@@ -9,7 +9,7 @@ public class SensorDataFormat {
     private String code;
     String str[];
     private Map<String,Float> map = new HashMap<>();
-    SensorDataFormat(String code,String messages,String time){
+    public SensorDataFormat(String code, String messages, String time){
         this.messages = messages;
         this.time = time;
         this.code = code;

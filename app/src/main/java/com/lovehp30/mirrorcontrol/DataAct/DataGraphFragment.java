@@ -1,6 +1,5 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.DataAct;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -11,14 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.lovehp30.mirrorcontrol.R;
 
 import java.sql.Timestamp;
 import java.text.ParseException;

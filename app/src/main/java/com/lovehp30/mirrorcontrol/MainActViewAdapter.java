@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class MainActViewAdapter extends FragmentStateAdapter {
@@ -17,8 +16,8 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if(position == 0)return new TestFragment();
-        else return new Test2Fragment();
+        if(position == 0)return new MirrorControlFragment();
+        else return new ListMQFragment();
     }
 
 

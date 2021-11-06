@@ -11,23 +11,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.lovehp30.mirrorcontrol.DataAct.DataActivity;
 
 import java.util.ArrayList;
 
 
-public class Test2Fragment extends Fragment {
+public class ListMQFragment extends Fragment {
 
     ListView listView;
     Test2ListAdapter adapter;
     ArrayList<ListViewItem> datas;
 
-    public static Test2Fragment newInstance(String param1, String param2) {
-        Test2Fragment fragment = new Test2Fragment();
+    public static ListMQFragment newInstance(String param1, String param2) {
+        ListMQFragment fragment = new ListMQFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Test2Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_test2, container, false);
+        View v = inflater.inflate(R.layout.fragment_mq, container, false);
 
         listView = v.findViewById(R.id.listView);
         adapter = new Test2ListAdapter(datas,v.getContext());

@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.util;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,11 +9,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.InputStream;
 
 public class RequestLogin {
     private static boolean IPVerify;

@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,13 +10,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.lovehp30.mirrorcontrol.MainActivity;
+import com.lovehp30.mirrorcontrol.R;
+import com.lovehp30.mirrorcontrol.util.RequestLogin;
 
 public class LoginActivity extends AppCompatActivity {
     EditText ipAddress, APIkey;

@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.util;
 
 import android.content.Context;
 import android.util.Log;
