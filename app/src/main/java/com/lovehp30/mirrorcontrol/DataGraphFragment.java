@@ -97,13 +97,6 @@ public class DataGraphFragment extends Fragment {
                 values.add(new Entry(x, val)); //x : time y : data
             }
         }
-        String days[] = {"일요일","월요일","화요일","수요일","목요일","금요일","토요일"};
-
-//        //data
-//        for (int i = 0; i < 10; i++) {
-//            float val = (float) (Math.random() * 10);
-//            values.add(new Entry(i, val)); //x : time y : data
-//        }//Test data
         LineDataSet lineDataset = new LineDataSet(values, title);
         lineDataset.setColor(ContextCompat.getColor(getContext(), R.color.primary)); //LineChart에서 Line Color 설정
         lineDataset.setCircleColor(ContextCompat.getColor(getContext(), R.color.primary)); // LineChart에서 Line Circle Color 설정
@@ -121,48 +114,22 @@ public class DataGraphFragment extends Fragment {
         xAxis.setLabelCount(8);
         xAxis.setGranularity(1f);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setValueFormatter(new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                Date date = new Date((long) value);
-
-                return days[date.getDay()];
-            }
-        });
+        xAxis.setValueFormatter((value, axis) -> MillToDateSimple((long) value));
+        //확대시 정보 자세하게 보여주는 부분 미설정
         // y출 설정
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setDrawLabels(false);
         yAxisRight.setDrawAxisLine(false);
         yAxisRight.setDrawGridLines(false);
-        //y축의 활성화 제거
-//
-////        lineChart.setVisibleXRangeMinimum(60 * 60 * 24 * 1000 * 5); //라인차트에서 최대로 보여질 X축의 데이터 설정
-////        lineChart.setDescription(null); //차트에서 Description 설정 저는 따로 안했습니다.
-//
-//
-//        Legend legend = lineChart.getLegend(); //레전드 설정 (차트 밑에 색과 라벨을 나타내는 설정)
-//        legend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);//하단 왼쪽에 설정
-//        legend.setTextColor(ContextCompat.getColor(getContext(), R.color.textColor)); // 레전드 컬러 설정
-
 
         chart.setData(lineData);
-
-//        LineDataSet set1;
-//        set1 = new LineDataSet(values, "DataSet 1");
-//
-//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-//        dataSets.add(set1); // add the data sets
-//
-//        // create a data object with the data sets
-//        LineData data = new LineData(dataSets);
-//
-//        // black lines and points
-//        set1.setColor(Color.BLACK);
-//        set1.setCircleColor(Color.BLACK);
-//
-//        // set data
-//        chart.setData(data);
         return v;
+    }
+    public String MillToDateSimple(long mills) {
+        String pattern = "MM-dd EEE";
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern);
+        String date = (String) formatter.format(new Timestamp(mills));
+        return date;
     }
     public String MillToDate(long mills) {
         String pattern = "yyyy-MM-dd HH:mm:ss";
