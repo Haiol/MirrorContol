@@ -6,15 +6,13 @@ import android.provider.BaseColumns;
 public final class DataBases {
 
     public static final class CreateDB implements BaseColumns {
-        public static final String NAME = "name";
-        public static final String CONTACT = "contact";
-        public static final String EMAIL = "email";
-        public static final String _TABLENAME = "address";
+        public static final String CODE = "code";
+        public static final String TOPIC = "topic";
+        public static final String _TABLENAME = "iotlist";
         public static final String _CREATE =
                 "create table "+_TABLENAME+"("
                         +_ID+" integer primary key autoincrement, "
-                        +NAME+" text not null , "
-                        +CONTACT+" text not null , "
-                        +EMAIL+" text not null );";
+                        +CODE+" text not null , "
+                        +TOPIC+" text not null );";
     }
 }

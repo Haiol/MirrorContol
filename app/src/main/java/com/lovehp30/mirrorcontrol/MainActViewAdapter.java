@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import static com.lovehp30.mirrorcontrol.DataAct.DataActivity.ip;
+
 public class MainActViewAdapter extends FragmentStateAdapter {
     public int mCount;
 
@@ -17,7 +19,7 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position == 0)return new MirrorControlFragment();
-        else return new ListMQFragment();
+        else return new ListMQFragment().newInstance("lovehp12.duckdns.org");
     }
 
 

@@ -1,16 +1,23 @@
 package com.lovehp30.mirrorcontrol;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class MQDatabaseHelper {
-    private static final String DATABASE_NAME = "";
+public class MQDbOpenHelper {
+    public static String DATABASE_NAME = "";
     private static final int DATABASE_VERSION = 1;
     public static SQLiteDatabase mDB;
     private DatabaseHelper mDBHelper;
     private Context mCtx;
+
+    public MQDbOpenHelper(Context context, String DATABASE_NAME){
+        this.mCtx = context;
+        this.DATABASE_NAME = DATABASE_NAME;
+    }
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -35,11 +42,8 @@ public class MQDatabaseHelper {
         }
     }
 
-    public MQDatabaseHelper(Context context){
-        this.mCtx = context;
-    }
 
-    public MQDatabaseHelper open() throws SQLException {
+    public MQDbOpenHelper open() throws SQLException {
         mDBHelper = new DatabaseHelper(mCtx, DATABASE_NAME, null, DATABASE_VERSION);
         mDB = mDBHelper.getWritableDatabase();
         return this;
@@ -47,5 +51,20 @@ public class MQDatabaseHelper {
 
     public void close(){
         mDB.close();
+    }
+
+    public long insertColumn(String code, String topic){
+        ContentValues values = new ContentValues();
+        values.put(DataBases.CreateDB.CODE, code);
+        values.put(DataBases.CreateDB.TOPIC, topic);
+        return mDB.insert(DataBases.CreateDB._TABLENAME, null, values);
+    }
+    public boolean deleteColumn(long id){
+        return mDB.delete(DataBases.CreateDB._TABLENAME, "_id="+id, null) > 0;
+    }
+
+    // Select All
+    public Cursor getAllColumns(){
+        return mDB.query(DataBases.CreateDB._TABLENAME, null, null, null, null, null, null);
     }
 }
