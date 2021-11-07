@@ -36,11 +36,11 @@
         </LinearLayout>
         <ImageView
             android:id="@+id/del_Btn"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
             android:layout_marginRight="20dp"
             android:layout_gravity="center|left"
-            android:src="@drawable/trash"/>
+            android:src="@drawable/delete_24"/>
 
     </LinearLayout>
 </LinearLayout>

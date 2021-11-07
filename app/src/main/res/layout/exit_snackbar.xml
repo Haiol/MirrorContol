@@ -13,19 +13,28 @@
         android:layout_weight="70"
         android:padding="5dp"
         android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/sb_code"
+        <com.google.android.material.textfield.TextInputLayout
             android:background="#fff"
             android:layout_width="match_parent"
             android:layout_marginBottom="3dp"
-            android:layout_height="wrap_content" />
+            android:hint="Code"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sb_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-        <EditText
-            android:id="@+id/sb_topic"
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
             android:background="#fff"
+            android:id="@+id/sb_code2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_marginBottom="3dp"
+            android:layout_height="wrap_content">
+        </com.google.android.material.textfield.TextInputEditText>
+
 
     </LinearLayout>
     <Button

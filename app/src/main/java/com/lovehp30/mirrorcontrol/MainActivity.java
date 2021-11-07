@@ -42,10 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         actionBar = getSupportActionBar();
-        menu = this.getResources().getDrawable(R.drawable.bar_menu);
-        Bitmap bitmap = ((BitmapDrawable) menu).getBitmap();
-        Drawable d = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, 70, 70, true));
-        actionBar.setHomeAsUpIndicator(d);
+        actionBar.setHomeAsUpIndicator(R.drawable.outline_menu_24);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
@@ -103,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Scroll",position+" "+positionOffset+" "+positionOffsetPixels);
                 if(position ==0 && positionOffset ==0) {
                     fab.setVisibility(View.INVISIBLE);
-                    toolbar.setTitle("MirrorControl");
+//                    toolbar.setTitle("MirrorControl");
 
                 }
                 else if(position==0 && positionOffset>0){
@@ -112,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 }else if(position==1 && positionOffset==0){
 
                 }else{
-                    toolbar.setTitle("SearchData");
+//                    toolbar.setTitle("SearchData");
                 }
             }
 
