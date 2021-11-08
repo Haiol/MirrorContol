@@ -1,22 +1,34 @@
 package com.lovehp30.mirrorcontrol;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.Button;
 
+import com.afollestad.materialdialogs.DialogBehavior;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.ModalDialog;
+import com.afollestad.materialdialogs.input.DialogInputExtKt;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -32,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Drawable menu;
 
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,38 +75,20 @@ public class MainActivity extends AppCompatActivity {
 
         /// 메뉴 생성-------------
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-                //Make snackbar
-                Snackbar snackbar = Snackbar.make(view,"",Snackbar.LENGTH_INDEFINITE);
-                Snackbar.SnackbarLayout sLayout = (Snackbar.SnackbarLayout)snackbar.getView();
 
-                View snackView = getLayoutInflater().inflate(R.layout.exit_snackbar, null);
-                Button button = snackView.findViewById(R.id.sb_ok);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        snackbar.dismiss();
-                    }
-                });
-                sLayout.addView(snackView,0);
-                snackbar.show();
-
-            }
+        fab.setOnClickListener(v -> {
+            MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+            dialog.title(null, "Input dialog");
+            dialog.show();
         });
 
         //Float----
 
 
-        Fragment fragment1 = new ListMQFragment();
         ViewPager2 pager2 = findViewById(R.id.viewPager);
         MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
         pager2.setAdapter(adapter);
         pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @SuppressLint("RestrictedApi")
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -113,24 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-//            @Override
-//            public void onPageSelected(int position) {
-//                super.onPageSelected(position);
-//                if(position == 0){
-//                    actionBar.setDisplayHomeAsUpEnabled(true);
-//
-//                    fab.startAnimation(fadeOutAnim);
-//                    fab.setVisibility(View.INVISIBLE);
-//                }else{
-//                    actionBar.setDisplayHomeAsUpEnabled(false);
-//                    fab.startAnimation(fadeInAnim);
-//                    fab.setVisibility(View.VISIBLE);
-//                }
-////                Toast.makeText(getApplicationContext(),position+"",Toast.LENGTH_SHORT).show();
-//            }
         });
 
-        //        ViewPager2
+
 
 
 
@@ -152,14 +132,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-//
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-//                || super.onSupportNavigateUp();
-//    }
 }
