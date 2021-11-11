@@ -18,7 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.material.textfield.TextInputEditText;
-import com.lovehp30.mirrorcontrol.MainActivity;
+import com.lovehp30.mirrorcontrol.main.MainActivity;
 import com.lovehp30.mirrorcontrol.R;
 
 import org.json.JSONException;

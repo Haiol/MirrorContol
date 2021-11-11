@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol.topics;
+package com.lovehp30.mirrorcontrol.main.topics;
 
 public class ListTopicItem {
     long id;

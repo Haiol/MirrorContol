@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol.topics;
+package com.lovehp30.mirrorcontrol.main.topics;
 
 import android.content.Context;
 import android.content.Intent;

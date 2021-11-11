@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.main.control;
 
 import androidx.lifecycle.ViewModel;
 

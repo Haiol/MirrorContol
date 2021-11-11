@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol.topics;
+package com.lovehp30.mirrorcontrol.main.topics;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

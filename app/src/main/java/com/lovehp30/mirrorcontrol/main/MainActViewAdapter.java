@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.main;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -7,8 +7,9 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.lovehp30.mirrorcontrol.common.ErrorFragment;
-import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
-import com.lovehp30.mirrorcontrol.topics.TopicsFragment;
+import com.lovehp30.mirrorcontrol.main.control.ControlFragment;
+import com.lovehp30.mirrorcontrol.main.topics.ListTopicItem;
+import com.lovehp30.mirrorcontrol.main.topics.TopicsFragment;
 
 public class MainActViewAdapter extends FragmentStateAdapter {
     public int mCount;

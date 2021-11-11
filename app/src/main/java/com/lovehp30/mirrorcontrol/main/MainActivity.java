@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.main;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -26,9 +26,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
+import com.lovehp30.mirrorcontrol.R;
 import com.lovehp30.mirrorcontrol.login.LoginActivity;
 import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
-import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
+import com.lovehp30.mirrorcontrol.main.topics.ListTopicItem;
 
 public class MainActivity extends AppCompatActivity {
     public static boolean isVerifySunLite,isVerifySkyMoon;

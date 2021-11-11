@@ -9,7 +9,7 @@
     android:weightSum="100"
     android:orientation="vertical"
     style="@style/Theme.MaterialComponents.DayNight"
-    tools:context=".ControlFragment">
+    tools:context=".main.control.ControlFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
