@@ -1,163 +1,110 @@
-package com.lovehp30.mirrorcontrol.Login;
+package com.lovehp30.mirrorcontrol.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ActivityOptions;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.Spanned;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.google.android.material.textfield.TextInputEditText;
 import com.lovehp30.mirrorcontrol.MainActivity;
 import com.lovehp30.mirrorcontrol.R;
-import com.lovehp30.mirrorcontrol.util.RequestLogin;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
-    EditText ipAddress, APIkey;
+    boolean isVerifySunLite = true;
+    boolean isVerifySkyMoon = false;
+    TextInputEditText ed_ipAddress,ed_Api;
     CheckBox checkBox;
-
+    String originKey = "0bb2a5ddbc354cc5be0a24d120c4c289";
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_MaterialComponents_DayNight_DarkActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-//        getActionBar().hide();
-        ipAddress = findViewById(R.id.et_ipAddress);
-        APIkey = findViewById(R.id.et_APIkey);
-        checkBox = findViewById(R.id.cb_rememberMe);
+        getWindow().setStatusBarColor(Color.parseColor("#3d3d3d"));
+        ed_ipAddress = findViewById(R.id.login_Ip);
+         ed_Api = findViewById(R.id.login_Api);
+         checkBox= findViewById(R.id.loign_rememberMe);
 
-        //Input filter IPAddress
-        InputFilter[] filters = new InputFilter[1];
-        filters[0] = new InputFilter() {
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                if (end > start) {
-                    String destTxt = dest.toString();
-                    String resultingTxt = destTxt.substring(0, dstart) + source.subSequence(start, end) + destTxt.substring(dend);
-                    if (!resultingTxt.matches("^\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3}(\\.(\\d{1,3})?)?)?)?)?)?")) {
-                        return "";
-                    } else {
-                        String[] splits = resultingTxt.split("\\.");
-                        for (int i = 0; i < splits.length; i++) {
-                            if (Integer.valueOf(splits[i]) > 255) {
-                                return "";
-                            }
-                        }
-                    }
-                }
-                return null;
-            }
-        };
-        ipAddress.setFilters(filters);
-        // CheckBox Memorized
         SharedPreferences sf  = getSharedPreferences("File",MODE_PRIVATE);
         String text1 = sf.getString("ip","");
         String text2 = sf.getString("key","");
+        assert text1 != null;
         if(!text1.equals(""))
             checkBox.setChecked(true);
-        APIkey.setText(text1);
-        APIkey.setText(text2);
+        ed_ipAddress.setText(text1);
+        ed_Api.setText(originKey);
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //CheckBox MEMO KEY
         SharedPreferences sharedPreferences = getSharedPreferences("File",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         if(checkBox.isChecked()){
-            String text1 = APIkey.getText().toString();
-            String text2 = ipAddress.getText().toString();
+            String text1 = ed_ipAddress.getText().toString();
+            String text2 = ed_Api.getText().toString();
 
-            editor.putString("api",text1);
-            editor.putString("ip",text2);
+            editor.putString("ip",text1);
+            editor.putString("key",text2);
         }
         else {
-            editor.putString("api", "");
             editor.putString("ip", "");
+            editor.putString("key", "");
         }
-        editor.commit();
+        editor.apply();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    public void verifyLogin(View view) {
+        ProgressDialog myProgressDialog= ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://"+ed_ipAddress.getText().toString()+":8080/api/config?apiKey="+ed_Api.getText().toString();
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                response -> {
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+                    try {
+                        JSONObject array = new JSONObject(response);
+                        isVerifySkyMoon = array.getBoolean("success");
+                        Log.e("LOGIN_API",isVerifySkyMoon+"");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+                },
+                error -> {
 
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void Login_Click(final View view) {
-        final ProgressDialog myProgressDialog = ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
-        RequestLogin requestLogin = new RequestLogin();
-
-        // start async task to wait for 5 second that update the view
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    requestLogin.VerifyIP("lovehp12.duckdns.org",getApplicationContext());
-                    requestLogin.VerifyAPI("lovehp12.duckdns.org","0bb2a5ddbc354cc5be0a24d120c4c289",getApplicationContext());
-
-//                    requestLogin.VerifyIP(ipAddress.getText().toString(),getApplicationContext());
-//                    requestLogin.VerifyAPI(ipAddress.getText().toString(),APIkey.getText().toString(),getApplicationContext());
-
-                    Thread.sleep(2500);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
                 }
-                return null;
-            }
+        );
 
-            @Override
-            protected void onPostExecute(Void result) {
-                if(requestLogin.getLoginStatus()) {
-                    myProgressDialog.hide();
-                    StartLoginTemplate();
-                }
-                else{
-                    myProgressDialog.hide();
-                    Toast.makeText(getBaseContext(),"Fail to Login",Toast.LENGTH_SHORT ).show();
-                }
-            }
-        };
-        task.execute((Void[]) null);
-    }
-
-    public void StartLoginTemplate() {
-        Intent intent = new Intent(this, MainActivity.class);
-
-        String ip = ipAddress.getText().toString();
-        String api = APIkey.getText().toString();
-
-        intent.putExtra("ip",ip);
-        intent.putExtra("api",api);
-        ActivityOptions.makeSceneTransitionAnimation(this).toBundle();
-        startActivity(intent);
-
-        //finish the activity. When user click back button doesn't come back this activity
+        //sunLite 에 대한 volley 작성해야함
+        Intent in = new Intent(getApplicationContext(), MainActivity.class);
+        in.putExtra("ipAddress",ed_ipAddress.getText().toString());
+        in.putExtra("isVerifySunLite",isVerifySunLite);
+        in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
+        startActivity(in);
+        Animatoo.animateSlideLeft(this);
+        myProgressDialog.dismiss();
         finish();
+
     }
+
 }
