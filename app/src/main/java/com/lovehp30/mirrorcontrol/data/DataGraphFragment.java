@@ -93,7 +93,13 @@ public class DataGraphFragment extends Fragment {
                 values.add(new Entry(x, val)); //x : time y : data
             }
         }
-        int sample = (int)Float.parseFloat(data[0].split(":")[1]) %9;
+        //data sampling
+        int sample=0;
+        String s = data[sample].split(":")[1];
+        while (s.equals("nan"))s = data[++sample].split(":")[1];
+        sample = (int)Float.parseFloat(s) %9;
+
+
         LineDataSet lineDataset = new LineDataSet(values, title);
         lineDataset.setColor(ContextCompat.getColor(getContext(), ColorAnInt(sample,false))); //LineChart에서 Line Color 설정
         lineDataset.setCircleColor(ContextCompat.getColor(getContext(),ColorAnInt(sample,true))); // LineChart에서 Line Circle Color 설정
@@ -111,7 +117,7 @@ public class DataGraphFragment extends Fragment {
         xAxis.setLabelCount(8);
         xAxis.setGranularity(1f);
         xAxis.setCenterAxisLabels(false);
-        xAxis.setValueFormatter((value, axis) -> MillToDateSimple((long) value));
+        xAxis.setValueFormatter((value, axis) -> MillToDateSimple((long) value)+"시");
         //확대시 정보 자세하게 보여주는 부분 미설정
         // y출 설정
         YAxis yAxisRight = chart.getAxisRight();
@@ -123,7 +129,7 @@ public class DataGraphFragment extends Fragment {
         return v;
     }
     public String MillToDateSimple(long mills) {
-        String pattern = "MM-dd EEE";
+        String pattern = "MM-dd EEE H";
         SimpleDateFormat formatter = new SimpleDateFormat(pattern);
         String date = (String) formatter.format(new Timestamp(mills));
         return date;

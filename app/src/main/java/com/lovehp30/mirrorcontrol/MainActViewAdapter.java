@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class MainActViewAdapter extends FragmentStateAdapter {
     public int mCount;
-
+    TopicsFragment list;
     public MainActViewAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
@@ -17,7 +17,11 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position == 0)return new ControlFragment();
-        else return new TopicsFragment().newInstance("lovehp12.duckdns.org");
+        else {
+            list = new TopicsFragment().setting("lovehp12.duckdns.org");
+            return list;
+
+        }
     }
 
 
@@ -29,6 +33,14 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return 2;
+    }
+    public void addListData(ListViewItem item){
+        list.addData(item);
+    }
+
+
+    public void refreshList(){
+        list.restart();
     }
 
 

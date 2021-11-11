@@ -1,9 +1,9 @@
 package com.lovehp30.mirrorcontrol;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,11 +13,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toolbar;
 
+
+import com.lovehp30.mirrorcontrol.data.DataActivity;
+import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
 
 import java.util.ArrayList;
 
@@ -26,10 +30,9 @@ public class TopicsFragment extends Fragment {
     private ListView listView;
     private TopicsViewModel mViewModel;
     private TopicsListAdapter adapter;
-    Toolbar toolbar;
-    String ip="";
-
-    public static TopicsFragment newInstance(String ip) {
+    String ip = "";
+    ArrayList<ListViewItem> items;
+    public static TopicsFragment setting(String ip) {
         TopicsFragment fragment = new TopicsFragment();
         Bundle args = new Bundle();
         args.putString("address", ip);
@@ -49,25 +52,29 @@ public class TopicsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View v =  inflater.inflate(R.layout.topics_fragment, container, false);
+        View v = inflater.inflate(R.layout.topics_fragment, container, false);
 
 
         mViewModel = ViewModelProviders.of(this).get(TopicsViewModel.class);
         listView = v.findViewById(R.id.listView);
-        mViewModel.setDatabaseHelper(v.getContext(),ip);
-        ArrayList<ListViewItem> items = mViewModel.getDBData();
+        mViewModel.setDatabaseHelper(v.getContext(), ip);
+        items = mViewModel.getDBData();
 
-        adapter = new TopicsListAdapter(items,getContext());
+        adapter = new TopicsListAdapter(items, getContext());
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-            }
-        });
+
         return v;
     }
 
+    public void restart() {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
+    public void addData(ListViewItem item) {
+        items.add(item);
+        adapter.notifyDataSetChanged();
+    }
 
 
 }

@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.lovehp30.mirrorcontrol.R;
@@ -26,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DataActivity extends AppCompatActivity {
@@ -34,6 +38,7 @@ public class DataActivity extends AppCompatActivity {
     private String ip ="lovehp12.duckdns.org";
     private int port=3000;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,22 +46,35 @@ public class DataActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#3d3d3d"));
         Toolbar toolbar = findViewById(R.id.dt_toolbar);
         TextView subtitle = findViewById(R.id.dt_subtitle);
+
+        Intent in = getIntent();
+        if(in==null)
+            finish();
+        else {
+            Client_code = in.getStringExtra("Client_Code");
+            Topics = in.getStringExtra("Topics");
+            addDataGraph();
+        }
         subtitle.setText(Topics);
         toolbar.setTitle(Client_code);
         setSupportActionBar(toolbar);
-        Intent in = getIntent();
-        Bundle bundle = in.getExtras();
-        if(bundle==null)
-            finish();
-        else {
-            Client_code = bundle.getString("code");
-            Topics = bundle.getString("topic");
-            addDataGraph();
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // ToolBar Setting
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     void addDataGraph(){
         ViewPager2 pager = findViewById(R.id.dt_viewpager);
         TabLayout tableLayout = findViewById(R.id.dt_tlTabs);
@@ -78,6 +96,9 @@ public class DataActivity extends AppCompatActivity {
                         }
                     }catch (JSONException e){
                         e.printStackTrace();
+                    }
+                    if(list.size()==0) {
+                        finish();
                     }
                     //Json 분석
                     DataActViewAdapter adapter = new DataActViewAdapter(ip,Client_code,Topics,list,getSupportFragmentManager(), getLifecycle());

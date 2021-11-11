@@ -14,6 +14,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.material.textfield.TextInputEditText;
 import com.lovehp30.mirrorcontrol.MainActivity;
 import com.lovehp30.mirrorcontrol.R;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.Theme_MaterialComponents_DayNight_DarkActionBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         getWindow().setStatusBarColor(Color.parseColor("#3d3d3d"));
@@ -67,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         in.putExtra("isVerifySunLite",isVerifySunLite);
         in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
         startActivity(in);
+        Animatoo.animateSlideLeft(this);
         myProgressDialog.dismiss();
         finish();
 

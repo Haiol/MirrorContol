@@ -67,4 +67,7 @@ public class MQDbOpenHelper {
     public Cursor getAllColumns(){
         return mDB.query(DataBases.CreateDB._TABLENAME, null, null, null, null, null, null);
     }
+    public Cursor getRecentColumns(){
+        return mDB.query(DataBases.CreateDB._TABLENAME, null, null, null, null, null, "_id DESC","1");
+    }
 }

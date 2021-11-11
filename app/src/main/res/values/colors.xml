@@ -6,7 +6,12 @@
     <color name="colorPrimaryStatus">#343434</color>
 
 
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#996a6a6a</color>
+    <color name="colorSecondary">#fff8e1</color>
+    <color name="colorLight">#ffffff</color>
+    <color name="colorDark">#ccc5af</color>
+
+
 
 
     <color name="graph1">#212121</color>

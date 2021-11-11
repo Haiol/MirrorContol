@@ -30,7 +30,7 @@ public class TopicsViewModel extends ViewModel {
             Log.e("DB","Count = "+cursor.getCount());
         while (cursor.moveToNext()){
             list.add(new ListViewItem(
-                    cursor.getInt(cursor.getColumnIndex("_id")),
+                    cursor.getLong(cursor.getColumnIndex("_id")),
                     cursor.getString(cursor.getColumnIndex("code")),
                     cursor.getString(cursor.getColumnIndex("topic"))
             ));
