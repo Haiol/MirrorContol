@@ -1,6 +1,9 @@
 package com.lovehp30.mirrorcontrol.data;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SensorDataFormat {
@@ -29,8 +32,10 @@ public class SensorDataFormat {
     public Float getValuesOfToken(String Key){
         return map.get(Key);
     }
-    public String[] getMapKeyList(){
-        return map.keySet().toArray(new String[map.size()]);
+    public ArrayList<String> getMapKeyArrayList(){
+        ArrayList<String> list = new ArrayList<>(map.keySet());
+        Collections.reverse(list);
+        return list;
     }
 
     public String getCode() {

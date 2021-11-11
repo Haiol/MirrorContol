@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.lovehp30.mirrorcontrol.ErrorFragment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,8 @@ public class DataActViewAdapter extends FragmentStateAdapter {
         this.client_code = client_code;
         this.topics = topics;
         this.list = list;
-        cnt = list.get(0).getMapKeyList().length;
+        if(list.size()!=0)
+        cnt = list.get(0).getMapKeyArrayList().size();
     }
     @NonNull
     @Override
@@ -36,9 +39,13 @@ public class DataActViewAdapter extends FragmentStateAdapter {
     }
     ArrayList<Fragment> createFrameList(){
         ArrayList<Fragment> frag = new ArrayList<>();
+        if(cnt==0){
+            frag.add(new ErrorFragment());
+            return frag;
+        }
         String[][] data = new String[cnt][list.size()];
         String[] time = new String[list.size()];
-        String[] label = list.get(0).getMapKeyList();
+        String[] label = list.get(0).getMapKeyArrayList().toArray(new String[0]);
         Log.e("DataAdapt",cnt+" "+list.size());
         for(int i=0;i<list.size();i++){
             for(int j=0;j<cnt;j++)

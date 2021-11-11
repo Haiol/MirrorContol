@@ -97,23 +97,23 @@ public class DataActivity extends AppCompatActivity {
                     }catch (JSONException e){
                         e.printStackTrace();
                     }
-                    if(list.size()==0) {
-                        finish();
-                    }
-                    //Json 분석
-                    DataActViewAdapter adapter = new DataActViewAdapter(ip,Client_code,Topics,list,getSupportFragmentManager(), getLifecycle());
+                    DataActViewAdapter adapter = new DataActViewAdapter(ip, Client_code, Topics, list, getSupportFragmentManager(), getLifecycle());
                     pager.setAdapter(adapter);
-                    String map[] = list.get(0).getMapKeyList();
+                    //Json 분석
+                    if(list.size()!=0) {
 
-                    new TabLayoutMediator(tableLayout, pager, new TabLayoutMediator.TabConfigurationStrategy() {
-                        @Override
-                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
-                            if(position==0)
-                                tab.setText("DataStream");
-                            else
-                                tab.setText(map[position-1]);
-                        }
-                    }).attach();
+                        ArrayList<String> ls = list.get(0).getMapKeyArrayList();
+
+                        new TabLayoutMediator(tableLayout, pager, new TabLayoutMediator.TabConfigurationStrategy() {
+                            @Override
+                            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                                if (position == 0)
+                                    tab.setText("DataStream");
+                                else
+                                    tab.setText(ls.get(position - 1));
+                            }
+                        }).attach();
+                    }
                     myProgressDialog.dismiss();
                 },
                 error -> {

@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -34,8 +36,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class MainActivity extends AppCompatActivity {
+    public static boolean isVerifySunLite,isVerifySkyMoon;
     String ip;
-    boolean isVerifySunLite,isVerifySkyMoon;
     ActionBar actionBar;
     DrawerLayout drawer;
     FloatingActionButton fab;
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         isVerifySkyMoon = bundle.getBoolean("isVerifySkyMoon");
         isVerifySunLite = bundle.getBoolean("isVerifySunLite");
         Log.e("Main",isVerifySkyMoon+"  "+isVerifySunLite);
-
+        //toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         ActionBarDrawerToggle mDrawerToggle;
         setSupportActionBar(toolbar);
@@ -60,24 +62,21 @@ public class MainActivity extends AppCompatActivity {
             drawer = findViewById(R.id.drawer_layout);
             actionBar.setDisplayHomeAsUpEnabled(true);
             mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.hello_world, R.string.hello_world)
-            {
-
-                public void onDrawerClosed(View view)
-                {
-                    supportInvalidateOptionsMenu();
-                }
-
+            {public void onDrawerClosed(View view) { supportInvalidateOptionsMenu(); }
                 public void onDrawerOpened(View drawerView)
-                {
-                    supportInvalidateOptionsMenu();
-                    //drawerOpened = true;
-                }
-            };
+                { supportInvalidateOptionsMenu(); }};
             mDrawerToggle.setDrawerIndicatorEnabled(true);
             drawer.setDrawerListener(mDrawerToggle);
             mDrawerToggle.syncState();
         }
+        //connection status_header
+
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View v = navigationView.getHeaderView(0);
+        ImageView img = v.findViewById(R.id.nh_imageView);
+        img.setImageResource(isVerifySkyMoon?R.drawable.monitor_on:R.drawable.monitor_off);
+        TextView textView = v.findViewById(R.id.nh_title);
+        textView.setText(isVerifySkyMoon?ip:"Not Connected");
         navigationView.setNavigationItemSelectedListener(item -> {
             item.setChecked(false);
             drawer.closeDrawers();
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        //pager
 
         ViewPager2 pager2 = findViewById(R.id.viewPager);
         MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
@@ -97,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Scroll",position+" "+positionOffset+" "+positionOffsetPixels);
                 if(position ==0 && positionOffset ==0) {
                     fab.setVisibility(View.INVISIBLE);
-                    setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar);
-
-
                 }
                 else if(position==0 && positionOffset>0){
                     fab.setVisibility(View.VISIBLE);

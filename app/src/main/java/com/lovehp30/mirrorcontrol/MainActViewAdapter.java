@@ -16,10 +16,11 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+//        if(position == 0)return MainActivity.isVerifySkyMoon?new ControlFragment():new ErrorFragment();
         if(position == 0)return new ControlFragment();
         else {
             list = new TopicsFragment().setting("lovehp12.duckdns.org");
-            return list;
+            return MainActivity.isVerifySunLite?list:new ErrorFragment();
 
         }
     }
