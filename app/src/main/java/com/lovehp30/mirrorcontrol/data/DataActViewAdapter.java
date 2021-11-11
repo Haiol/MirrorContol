@@ -19,7 +19,7 @@ public class DataActViewAdapter extends FragmentStateAdapter {
     private String ip;
     private List<SensorDataFormat> list;
     int cnt = 0;
-    public DataActViewAdapter(String ip,String client_code, String topics, List<SensorDataFormat> list, @NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public DataActViewAdapter(String ip, String client_code, String topics, List<SensorDataFormat> list, @NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
         this.ip = ip;
         this.client_code = client_code;

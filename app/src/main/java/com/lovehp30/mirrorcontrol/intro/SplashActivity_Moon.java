@@ -1,9 +1,9 @@
 package com.lovehp30.mirrorcontrol.intro;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.lovehp30.mirrorcontrol.R;
 import com.lovehp30.mirrorcontrol.login.LoginActivity;

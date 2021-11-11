@@ -1,6 +1,5 @@
 package com.lovehp30.mirrorcontrol.data;
 
-import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,16 +156,16 @@ public class DataGraphFragment extends Fragment {
     }
     int ColorAnInt(int rand,boolean type){
         switch (rand){
-            case 0: return type?R.color.graph1:R.color.graph1_l;
-            case 1: return type?R.color.graph2:R.color.graph2_l;
-            case 2: return type?R.color.graph3:R.color.graph3_l;
-            case 3: return type?R.color.graph4:R.color.graph4_l;
-            case 4: return type?R.color.graph5:R.color.graph5_l;
-            case 5: return type?R.color.graph6:R.color.graph6_l;
-            case 6: return type?R.color.graph7:R.color.graph7_l;
-            case 7: return type?R.color.graph8:R.color.graph8_l;
-            case 8: return type?R.color.graph9:R.color.graph9_l;
-            default: return type?R.color.graph10:R.color.graph10_l;
+            case 0: return type? R.color.graph1: R.color.graph1_l;
+            case 1: return type? R.color.graph2: R.color.graph2_l;
+            case 2: return type? R.color.graph3: R.color.graph3_l;
+            case 3: return type? R.color.graph4: R.color.graph4_l;
+            case 4: return type? R.color.graph5: R.color.graph5_l;
+            case 5: return type? R.color.graph6: R.color.graph6_l;
+            case 6: return type? R.color.graph7: R.color.graph7_l;
+            case 7: return type? R.color.graph8: R.color.graph8_l;
+            case 8: return type? R.color.graph9: R.color.graph9_l;
+            default: return type? R.color.graph10: R.color.graph10_l;
         }
     }
 }

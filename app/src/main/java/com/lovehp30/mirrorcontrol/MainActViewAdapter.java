@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.lovehp30.mirrorcontrol.common.ErrorFragment;
 import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
 import com.lovehp30.mirrorcontrol.topics.TopicsFragment;
 

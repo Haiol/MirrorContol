@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol.common;
+package com.lovehp30.mirrorcontrol;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.lovehp30.mirrorcontrol.R;
 
 /**
  * A simple {@link Fragment} subclass.

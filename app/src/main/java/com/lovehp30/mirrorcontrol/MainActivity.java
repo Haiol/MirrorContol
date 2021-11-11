@@ -11,6 +11,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,16 +29,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.lovehp30.mirrorcontrol.login.LoginActivity;
 import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
 import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager2.widget.ViewPager2;
 
 public class MainActivity extends AppCompatActivity {
     public static boolean isVerifySunLite,isVerifySkyMoon;
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         });
         View v = navigationView.getHeaderView(0);
         ImageView img = v.findViewById(R.id.nh_imageView);
-        img.setImageResource(isVerifySkyMoon?R.drawable.monitor_on:R.drawable.monitor_off);
+        img.setImageResource(isVerifySkyMoon? R.drawable.monitor_on: R.drawable.monitor_off);
         TextView textView = v.findViewById(R.id.nh_title);
         textView.setText(isVerifySkyMoon?ip:"Not Connected");
         navigationView.setNavigationItemSelectedListener(item -> {

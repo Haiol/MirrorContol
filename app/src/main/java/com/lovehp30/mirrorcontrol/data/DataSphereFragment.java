@@ -54,7 +54,7 @@ public class DataSphereFragment extends Fragment {
      * @return A new instance of fragment DataSphereFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DataSphereFragment putID(String param0,String param1, String param2) {
+    public static DataSphereFragment putID(String param0, String param1, String param2) {
         DataSphereFragment fragment = new DataSphereFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM0, param0);
