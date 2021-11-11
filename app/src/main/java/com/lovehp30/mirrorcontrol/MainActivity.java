@@ -1,58 +1,64 @@
 package com.lovehp30.mirrorcontrol;
 
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.afollestad.materialdialogs.DialogBehavior;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.ModalDialog;
+import com.afollestad.materialdialogs.input.DialogInputExtKt;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.textfield.TextInputEditText;
-import com.lovehp30.mirrorcontrol.login.LoginActivity;
-import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
-import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
-
 public class MainActivity extends AppCompatActivity {
-    public static boolean isVerifySunLite,isVerifySkyMoon;
-    String ip;
-    ActionBar actionBar;
     DrawerLayout drawer;
+    ActionBar actionBar;
     FloatingActionButton fab;
+    Animation fadeInAnim,fadeOutAnim;
+    Drawable menu;
+
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getWindow().setStatusBarColor(Color.parseColor("#3d3d3d"));
-        Bundle bundle = getIntent().getExtras();
-        ip = bundle.getString("ipAddress");
-        isVerifySkyMoon = bundle.getBoolean("isVerifySkyMoon");
-        isVerifySunLite = bundle.getBoolean("isVerifySunLite");
-        Log.e("Main",isVerifySkyMoon+"  "+isVerifySunLite);
-        //toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        ActionBarDrawerToggle mDrawerToggle;
         setSupportActionBar(toolbar);
+
+
+
         actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.outline_menu_24);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -62,20 +68,23 @@ public class MainActivity extends AppCompatActivity {
                 navigationView.clearFocus();
                 navigationView.requestFocus();
                 drawer.closeDrawers();
+
                 return true;
             }
         });
-        View v = navigationView.getHeaderView(0);
-        ImageView img = v.findViewById(R.id.nh_imageView);
-        img.setImageResource(isVerifySkyMoon? R.drawable.monitor_on: R.drawable.monitor_off);
-        TextView textView = v.findViewById(R.id.nh_title);
-        textView.setText(isVerifySkyMoon?ip:"Not Connected");
-        navigationView.setNavigationItemSelectedListener(item -> {
-            item.setChecked(false);
-            drawer.closeDrawers();
-            return true;
+
+        /// 메뉴 생성-------------
+        fab = findViewById(R.id.fab);
+
+        fab.setOnClickListener(v -> {
+            MaterialDialog dialog = new MaterialDialog(this, MaterialDialog.getDEFAULT_BEHAVIOR());
+            dialog.title(null, "Input dialog");
+            dialog.show();
         });
-        //pager
+
+        //Float----
+
+
         ViewPager2 pager2 = findViewById(R.id.viewPager);
         MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
         pager2.setAdapter(adapter);
@@ -86,49 +95,35 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Scroll",position+" "+positionOffset+" "+positionOffsetPixels);
                 if(position ==0 && positionOffset ==0) {
                     fab.setVisibility(View.INVISIBLE);
+//                    toolbar.setTitle("MirrorControl");
+
                 }
                 else if(position==0 && positionOffset>0){
                     fab.setVisibility(View.VISIBLE);
                     fab.setAlpha(positionOffset);
                 }else if(position==1 && positionOffset==0){
+
                 }else{
+//                    toolbar.setTitle("SearchData");
                 }
             }
+
         });
-        fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
-            View edit  = getLayoutInflater().inflate(R.layout.edit_layout, null);
-            Button ed_btn = edit.findViewById(R.id.ed_ok);
-            builder.setView(edit);
-            AlertDialog ad = builder.create();
-            ed_btn.setOnClickListener(v1 -> {
-                TextInputEditText code = edit.findViewById(R.id.ed_code);
-                TextInputEditText topic = edit.findViewById(R.id.ed_topic);
-                if(!code.getText().toString().equals("")){
-                    MQDbOpenHelper helper = new MQDbOpenHelper(getBaseContext(),"lovehp12duckdnsorg");
-                    helper.open();
-                    helper.insertColumn(code.getText().toString(),topic.getText().toString());
-                    Cursor cursor = helper.getRecentColumns();
-                    if(cursor.moveToNext()) {
-                        adapter.addListData(new ListTopicItem(
-                                cursor.getLong(cursor.getColumnIndex("_id")),
-                                cursor.getString(cursor.getColumnIndex("code")),
-                                cursor.getString(cursor.getColumnIndex("topic"))
-                        ));
-                    }
-                    helper.close();
-                    cursor.close();
-                    ad.dismiss();
-                }
-            });
-            ad.show();
-        });
+
+
+
+
+
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         switch (id) {
             case android.R.id.home:
                 drawer.openDrawer(GravityCompat.START);
@@ -137,16 +132,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    public void logOutThisIp(View v){
-        Intent in = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(in);
-        Animatoo.animateSlideRight(this);
-        finish();
-
-    }
-
-
-
-
 }
