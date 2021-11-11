@@ -1,4 +1,4 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.topics;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,24 +12,24 @@ import java.util.ArrayList;
 
 public class TopicsViewModel extends ViewModel {
     private MQDbOpenHelper databaseHelper;
-    private ArrayList<ListViewItem> datas;
+    private ArrayList<ListTopicItem> datas;
     // TODO: Implement the ViewModel
     void setDatabaseHelper(Context v,String ip){
         ip = ip.replaceAll("[.]","");
         databaseHelper = new MQDbOpenHelper(v,ip);
     }
 
-    ArrayList<ListViewItem> getDBData(){
+    ArrayList<ListTopicItem> getDBData(){
         databaseHelper.open();
-        ArrayList<ListViewItem> list = new ArrayList<>();
+        ArrayList<ListTopicItem> list = new ArrayList<>();
         Cursor cursor = databaseHelper.getAllColumns();
         if(cursor.getColumnCount()==0){
-            list.add(new ListViewItem(0,"",""));
+            list.add(new ListTopicItem(0,"",""));
             return list;
         }
             Log.e("DB","Count = "+cursor.getCount());
         while (cursor.moveToNext()){
-            list.add(new ListViewItem(
+            list.add(new ListTopicItem(
                     cursor.getLong(cursor.getColumnIndex("_id")),
                     cursor.getString(cursor.getColumnIndex("code")),
                     cursor.getString(cursor.getColumnIndex("topic"))

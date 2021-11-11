@@ -34,9 +34,9 @@
             android:layout_height="match_parent"
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginRight="2dp"
-            app:icon="@drawable/monitor_on"
+            app:icon="@drawable/monitor_off"
             android:layout_weight="1"
-            android:text="monitorOn" />
+            android:text="monitorOff" />
     </LinearLayout>
 
     <LinearLayout

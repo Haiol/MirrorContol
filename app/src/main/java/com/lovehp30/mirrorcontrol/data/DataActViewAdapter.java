@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.lovehp30.mirrorcontrol.ErrorFragment;
+import com.lovehp30.mirrorcontrol.common.ErrorFragment;
 
 import java.util.ArrayList;
 import java.util.List;

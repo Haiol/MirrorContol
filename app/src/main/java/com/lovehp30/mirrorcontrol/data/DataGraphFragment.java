@@ -1,5 +1,6 @@
 package com.lovehp30.mirrorcontrol.data;
 
+import android.graphics.DashPathEffect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -104,6 +105,8 @@ public class DataGraphFragment extends Fragment {
         lineDataset.setColor(ContextCompat.getColor(getContext(), ColorAnInt(sample,false))); //LineChart에서 Line Color 설정
         lineDataset.setCircleColor(ContextCompat.getColor(getContext(),ColorAnInt(sample,true))); // LineChart에서 Line Circle Color 설정
         lineDataset.setCircleColorHole(ContextCompat.getColor(getContext(), ColorAnInt(sample,true))); // LineChart에서 Line Hole Circle Color 설정
+        lineDataset.setDrawFilled(true);
+        lineDataset.setFillColor(ContextCompat.getColor(getContext(), ColorAnInt(sample,false)));
 
         LineData lineData = new LineData();
         lineData.addDataSet(lineDataset);
@@ -124,8 +127,8 @@ public class DataGraphFragment extends Fragment {
         yAxisRight.setDrawLabels(false);
         yAxisRight.setDrawAxisLine(false);
         yAxisRight.setDrawGridLines(false);
-
         chart.setData(lineData);
+        chart.animateXY(500,500);
         return v;
     }
     public String MillToDateSimple(long mills) {

@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     boolean isVerifySunLite = true;
     boolean isVerifySkyMoon = false;
     TextInputEditText ed_ipAddress,ed_Api;
+    CheckBox checkBox;
+    String originKey = "0bb2a5ddbc354cc5be0a24d120c4c289";
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +38,39 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         getWindow().setStatusBarColor(Color.parseColor("#3d3d3d"));
         ed_ipAddress = findViewById(R.id.login_Ip);
-         ed_Api = findViewById(R.id.login_Ip);
+         ed_Api = findViewById(R.id.login_Api);
+         checkBox= findViewById(R.id.loign_rememberMe);
 
+        SharedPreferences sf  = getSharedPreferences("File",MODE_PRIVATE);
+        String text1 = sf.getString("ip","");
+        String text2 = sf.getString("key","");
+        assert text1 != null;
+        if(!text1.equals(""))
+            checkBox.setChecked(true);
+        ed_ipAddress.setText(text1);
+        ed_Api.setText(originKey);
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences sharedPreferences = getSharedPreferences("File",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        if(checkBox.isChecked()){
+            String text1 = ed_ipAddress.getText().toString();
+            String text2 = ed_Api.getText().toString();
+
+            editor.putString("ip",text1);
+            editor.putString("key",text2);
+        }
+        else {
+            editor.putString("ip", "");
+            editor.putString("key", "");
+        }
+        editor.apply();
+    }
 
     public void verifyLogin(View view) {
         ProgressDialog myProgressDialog= ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
@@ -74,4 +106,5 @@ public class LoginActivity extends AppCompatActivity {
         finish();
 
     }
+
 }

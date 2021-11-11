@@ -1,9 +1,8 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.topics;
 
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +12,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toolbar;
 
 
-import com.lovehp30.mirrorcontrol.data.DataActivity;
-import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
+import com.lovehp30.mirrorcontrol.R;
 
 import java.util.ArrayList;
 
@@ -31,7 +25,7 @@ public class TopicsFragment extends Fragment {
     private TopicsViewModel mViewModel;
     private TopicsListAdapter adapter;
     String ip = "";
-    ArrayList<ListViewItem> items;
+    ArrayList<ListTopicItem> items;
     public static TopicsFragment setting(String ip) {
         TopicsFragment fragment = new TopicsFragment();
         Bundle args = new Bundle();
@@ -71,7 +65,7 @@ public class TopicsFragment extends Fragment {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }
-    public void addData(ListViewItem item) {
+    public void addData(ListTopicItem item) {
         items.add(item);
         adapter.notifyDataSetChanged();
     }

@@ -6,6 +6,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.lovehp30.mirrorcontrol.common.ErrorFragment;
+import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
+import com.lovehp30.mirrorcontrol.topics.TopicsFragment;
+
 public class MainActViewAdapter extends FragmentStateAdapter {
     public int mCount;
     TopicsFragment list;
@@ -35,7 +39,7 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 2;
     }
-    public void addListData(ListViewItem item){
+    public void addListData(ListTopicItem item){
         list.addData(item);
     }
 

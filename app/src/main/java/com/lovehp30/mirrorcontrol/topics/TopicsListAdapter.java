@@ -1,22 +1,18 @@
-package com.lovehp30.mirrorcontrol;
+package com.lovehp30.mirrorcontrol.topics;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.lovehp30.mirrorcontrol.R;
 import com.lovehp30.mirrorcontrol.data.DataActivity;
 import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
 
@@ -24,10 +20,10 @@ import java.util.ArrayList;
 
 public class TopicsListAdapter extends BaseAdapter {
 
-    ArrayList<ListViewItem> datas;
+    ArrayList<ListTopicItem> datas;
     Context context;
 
-    TopicsListAdapter(ArrayList<ListViewItem> datas, Context context) {
+    TopicsListAdapter(ArrayList<ListTopicItem> datas, Context context) {
         this.datas = datas;
         this.context = context;
     }
@@ -53,7 +49,7 @@ public class TopicsListAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         if (convertView == null)
             convertView = inflater.inflate(R.layout.topic_list_item, parent, false);
-        ListViewItem data = datas.get(position);
+        ListTopicItem data = datas.get(position);
         TextView view1 = convertView.findViewById(R.id.text_title);
         TextView view2 = convertView.findViewById(R.id.text_sub_title);
         view1.setText(data.title);

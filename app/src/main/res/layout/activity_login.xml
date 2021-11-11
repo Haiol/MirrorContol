@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="3dp"
             android:padding="5dp"
-            android:hint="Client_Code">
+            android:hint="Ip_Address">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_Ip"
@@ -59,7 +59,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
-            android:id="@+id/cb_rememberMe"
+            android:id="@+id/loign_rememberMe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="false"

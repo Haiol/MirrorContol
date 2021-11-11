@@ -1,6 +1,5 @@
 package com.lovehp30.mirrorcontrol;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,20 +14,17 @@ import android.widget.TextView;
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.lovehp30.mirrorcontrol.login.LoginActivity;
 import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
+import com.lovehp30.mirrorcontrol.topics.ListTopicItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -56,22 +51,20 @@ public class MainActivity extends AppCompatActivity {
         ActionBarDrawerToggle mDrawerToggle;
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.outline_menu_24);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            drawer = findViewById(R.id.drawer_layout);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.hello_world, R.string.hello_world)
-            {public void onDrawerClosed(View view) { supportInvalidateOptionsMenu(); }
-                public void onDrawerOpened(View drawerView)
-                { supportInvalidateOptionsMenu(); }};
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-            drawer.setDrawerListener(mDrawerToggle);
-            mDrawerToggle.syncState();
-        }
-        //connection status_header
-
+        actionBar.setHomeAsUpIndicator(R.drawable.outline_menu_24);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item.setChecked(true);
+                navigationView.clearFocus();
+                navigationView.requestFocus();
+                drawer.closeDrawers();
+                return true;
+            }
+        });
         View v = navigationView.getHeaderView(0);
         ImageView img = v.findViewById(R.id.nh_imageView);
         img.setImageResource(isVerifySkyMoon?R.drawable.monitor_on:R.drawable.monitor_off);
@@ -82,11 +75,7 @@ public class MainActivity extends AppCompatActivity {
             drawer.closeDrawers();
             return true;
         });
-
-
-
         //pager
-
         ViewPager2 pager2 = findViewById(R.id.viewPager);
         MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
         pager2.setAdapter(adapter);
@@ -102,49 +91,53 @@ public class MainActivity extends AppCompatActivity {
                     fab.setVisibility(View.VISIBLE);
                     fab.setAlpha(positionOffset);
                 }else if(position==1 && positionOffset==0){
-
                 }else{
-
-
                 }
             }
-
         });
-
-
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
-                View edit  = getLayoutInflater().inflate(R.layout.edit_layout, null);
-                Button ed_btn = edit.findViewById(R.id.ed_ok);
-                builder.setView(edit);
-                AlertDialog ad = builder.create();
-                ed_btn.setOnClickListener(v1 -> {
-                    TextInputEditText code = edit.findViewById(R.id.ed_code);
-                    TextInputEditText topic = edit.findViewById(R.id.ed_topic);
-                    if(!code.getText().toString().equals("")){
-                        MQDbOpenHelper helper = new MQDbOpenHelper(getBaseContext(),"lovehp12duckdnsorg");
-                        helper.open();
-                        helper.insertColumn(code.getText().toString(),topic.getText().toString());
-                        Cursor cursor = helper.getRecentColumns();
-                        if(cursor.moveToNext()) {
-                            adapter.addListData(new ListViewItem(
-                                    cursor.getLong(cursor.getColumnIndex("_id")),
-                                    cursor.getString(cursor.getColumnIndex("code")),
-                                    cursor.getString(cursor.getColumnIndex("topic"))
-                            ));
-                        }
-                        helper.close();
-                        cursor.close();
-                        ad.dismiss();
+        fab.setOnClickListener(view -> {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(MainActivity.this);
+            View edit  = getLayoutInflater().inflate(R.layout.edit_layout, null);
+            Button ed_btn = edit.findViewById(R.id.ed_ok);
+            builder.setView(edit);
+            AlertDialog ad = builder.create();
+            ed_btn.setOnClickListener(v1 -> {
+                TextInputEditText code = edit.findViewById(R.id.ed_code);
+                TextInputEditText topic = edit.findViewById(R.id.ed_topic);
+                if(!code.getText().toString().equals("")){
+                    MQDbOpenHelper helper = new MQDbOpenHelper(getBaseContext(),"lovehp12duckdnsorg");
+                    helper.open();
+                    helper.insertColumn(code.getText().toString(),topic.getText().toString());
+                    Cursor cursor = helper.getRecentColumns();
+                    if(cursor.moveToNext()) {
+                        adapter.addListData(new ListTopicItem(
+                                cursor.getLong(cursor.getColumnIndex("_id")),
+                                cursor.getString(cursor.getColumnIndex("code")),
+                                cursor.getString(cursor.getColumnIndex("topic"))
+                        ));
                     }
-                });
-                ad.show();
-            }
+                    helper.close();
+                    cursor.close();
+                    ad.dismiss();
+                }
+            });
+            ad.show();
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     public void logOutThisIp(View v){
         Intent in = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(in);

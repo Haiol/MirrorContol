@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ErrorFragment">
+    tools:context=".common.ErrorFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
+        android:id="@+id/err_icon"
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
