@@ -11,15 +11,28 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.lovehp30.mirrorcontrol.R;
+import com.lovehp30.mirrorcontrol.main.topics.TopicsFragment;
 
 public class ControlFragment extends Fragment {
+    String ip = "";
 
     private ControlViewModel mViewModel;
 
-    public static ControlFragment newInstance() {
-        return new ControlFragment();
+    public static ControlFragment setting(String ip) {
+        ControlFragment fragment = new ControlFragment();
+        Bundle args = new Bundle();
+        args.putString("address", ip);
+        fragment.setArguments(args);
+        return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            ip = getArguments().getString("address");
+        }
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

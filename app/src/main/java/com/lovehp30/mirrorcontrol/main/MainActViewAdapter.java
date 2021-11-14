@@ -14,15 +14,17 @@ import com.lovehp30.mirrorcontrol.main.topics.TopicsFragment;
 public class MainActViewAdapter extends FragmentStateAdapter {
     public int mCount;
     TopicsFragment list;
-    public MainActViewAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    String ip;
+    public MainActViewAdapter(String ip,@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
+        this.ip = ip;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
 //        if(position == 0)return MainActivity.isVerifySkyMoon?new ControlFragment():new ErrorFragment();
-        if(position == 0)return new ControlFragment();
+        if(position == 0)return new ControlFragment().setting(ip);
         else {
             list = new TopicsFragment().setting("lovehp12.duckdns.org");
             return MainActivity.isVerifySunLite?list:new ErrorFragment();

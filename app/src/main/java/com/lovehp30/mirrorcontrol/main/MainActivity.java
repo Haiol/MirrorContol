@@ -28,12 +28,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.lovehp30.mirrorcontrol.R;
 import com.lovehp30.mirrorcontrol.login.LoginActivity;
+import com.lovehp30.mirrorcontrol.main.control.ControlVolleyRequest;
 import com.lovehp30.mirrorcontrol.sqllite.MQDbOpenHelper;
 import com.lovehp30.mirrorcontrol.main.topics.ListTopicItem;
 
 public class MainActivity extends AppCompatActivity {
     public static boolean isVerifySunLite,isVerifySkyMoon;
-    String ip;
+    String ip,key;
     ActionBar actionBar;
     DrawerLayout drawer;
     FloatingActionButton fab;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.parseColor("#3d3d3d"));
         Bundle bundle = getIntent().getExtras();
         ip = bundle.getString("ipAddress");
+        key = bundle.getString("apiKey");
         isVerifySkyMoon = bundle.getBoolean("isVerifySkyMoon");
         isVerifySunLite = bundle.getBoolean("isVerifySunLite");
         Log.e("Main",isVerifySkyMoon+"  "+isVerifySunLite);
@@ -56,22 +58,19 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                item.setChecked(true);
-                navigationView.clearFocus();
-                navigationView.requestFocus();
-                drawer.closeDrawers();
-                return true;
-            }
-        });
         View v = navigationView.getHeaderView(0);
         ImageView img = v.findViewById(R.id.nh_imageView);
         img.setImageResource(isVerifySkyMoon? R.drawable.monitor_on: R.drawable.monitor_off);
         TextView textView = v.findViewById(R.id.nh_title);
         textView.setText(isVerifySkyMoon?ip:"Not Connected");
         navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.mirror_reboot:
+                    ControlVolleyRequest.onlyGetRequest(this,
+                            ip,key,"reboot");
+                    finish();
+                    break;
+            }
             item.setChecked(false);
             drawer.closeDrawers();
             return true;

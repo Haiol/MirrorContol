@@ -76,34 +76,47 @@ public class LoginActivity extends AppCompatActivity {
         ProgressDialog myProgressDialog= ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://"+ed_ipAddress.getText().toString()+":8080/api/config?apiKey="+ed_Api.getText().toString();
+        Log.e("LoginUrl",url);
         StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
                 response -> {
-
                     try {
                         JSONObject array = new JSONObject(response);
                         isVerifySkyMoon = array.getBoolean("success");
                         Log.e("LOGIN_API",isVerifySkyMoon+"");
+
+                        //sunLite 에 대한 volley 작성해야함
+                        Intent in = new Intent(getApplicationContext(), MainActivity.class);
+                        in.putExtra("ipAddress",ed_ipAddress.getText().toString());
+                        in.putExtra("apiKey",ed_Api.getText().toString());
+                        in.putExtra("isVerifySunLite",isVerifySunLite);
+                        in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
+                        startActivity(in);
+                        Animatoo.animateSlideLeft(this);
+                        myProgressDialog.dismiss();
+                        finish();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 },
                 error -> {
+                    Intent in = new Intent(getApplicationContext(), MainActivity.class);
+                    in.putExtra("ipAddress",ed_ipAddress.getText().toString());
+                    in.putExtra("apiKey",ed_Api.getText().toString());
+                    in.putExtra("isVerifySunLite",isVerifySunLite);
+                    in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
+                    startActivity(in);
+                    Animatoo.animateSlideLeft(this);
+                    myProgressDialog.dismiss();
+                    finish();
 
                 }
         );
+        queue.add(request);
 
-        //sunLite 에 대한 volley 작성해야함
-        Intent in = new Intent(getApplicationContext(), MainActivity.class);
-        in.putExtra("ipAddress",ed_ipAddress.getText().toString());
-        in.putExtra("isVerifySunLite",isVerifySunLite);
-        in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
-        startActivity(in);
-        Animatoo.animateSlideLeft(this);
-        myProgressDialog.dismiss();
-        finish();
+
 
     }
 
