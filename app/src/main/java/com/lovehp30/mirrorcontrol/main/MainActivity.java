@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //pager
         ViewPager2 pager2 = findViewById(R.id.viewPager);
-        MainActViewAdapter adapter=new MainActViewAdapter(getSupportFragmentManager(),getLifecycle());
+        MainActViewAdapter adapter=new MainActViewAdapter(ip,key,getSupportFragmentManager(),getLifecycle());
         pager2.setAdapter(adapter);
         pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
