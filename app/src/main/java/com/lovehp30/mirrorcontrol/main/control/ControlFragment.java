@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,15 +19,16 @@ import com.lovehp30.mirrorcontrol.main.topics.TopicsFragment;
 public class ControlFragment extends Fragment {
     String ip = "";
     String key = "";
-
+    int bright=0;
 
     private ControlViewModel mViewModel;
 
-    public static ControlFragment setting(String ip,String key) {
+    public static ControlFragment setting(int bright,String ip,String key) {
         ControlFragment fragment = new ControlFragment();
         Bundle args = new Bundle();
         args.putString("address", ip);
         args.putString("key", key);
+        args.putInt("bright", bright);
 
         fragment.setArguments(args);
         return fragment;
@@ -38,7 +40,7 @@ public class ControlFragment extends Fragment {
         if (getArguments() != null) {
             ip = getArguments().getString("address");
             key = getArguments().getString("key");
-
+            bright = getArguments().getInt("bright");
         }
     }
     @Override
@@ -54,8 +56,29 @@ public class ControlFragment extends Fragment {
         monitorOff.setOnClickListener(vi->{
             ControlVolleyRequest.onlyGetRequest(v.getContext(),ip,key,"monitor/off");
         });
-
+        TextView br_text = v.findViewById(R.id.br_text);
+        br_text.setText(bright+"");
         Slider slider = v.findViewById(R.id.brightness);
+        if(bright>=0) {
+            slider.setValue(bright);
+            slider.addOnChangeListener(new Slider.OnChangeListener() {
+                @Override
+                public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                    br_text.setText(value+"");
+                }
+            });
+            slider.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+                @Override
+                public void onStartTrackingTouch(@NonNull Slider slider) {
+
+                }
+                @Override
+                public void onStopTrackingTouch(@NonNull Slider slider) {
+                    ControlVolleyRequest.onlyGetRequest(v.getContext(),ip,key,"brightness/"+(int)slider.getValue());
+                }
+            });
+        }
+
 
         return v;
     }

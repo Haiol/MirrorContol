@@ -15,10 +15,13 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     public int mCount;
     TopicsFragment list;
     String ip,key;
-    public MainActViewAdapter(String ip,String key,@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    int bright=0;
+    public MainActViewAdapter(int bright,String ip,String key,@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
         this.ip = ip;
         this.key = key;
+        this.bright = bright;
+
 
     }
 
@@ -26,7 +29,7 @@ public class MainActViewAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
 //        if(position == 0)return MainActivity.isVerifySkyMoon?new ControlFragment():new ErrorFragment();
-        if(position == 0)return new ControlFragment().setting(ip,key);
+        if(position == 0)return new ControlFragment().setting(bright,ip,key);
         else {
             list = new TopicsFragment().setting("lovehp12.duckdns.org");
             return MainActivity.isVerifySunLite?list:new ErrorFragment();

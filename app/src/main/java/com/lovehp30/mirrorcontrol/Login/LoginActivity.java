@@ -21,12 +21,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.lovehp30.mirrorcontrol.main.MainActivity;
 import com.lovehp30.mirrorcontrol.R;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity {
     boolean isVerifySunLite = true;
     boolean isVerifySkyMoon = false;
+    int bright = 0;
     TextInputEditText ed_ipAddress,ed_Api;
     CheckBox checkBox;
     String originKey = "0bb2a5ddbc354cc5be0a24d120c4c289";
@@ -76,15 +78,15 @@ public class LoginActivity extends AppCompatActivity {
         ProgressDialog myProgressDialog= ProgressDialog.show(this, "Please Wait", "Trying to login..", true);
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://"+ed_ipAddress.getText().toString()+":8080/api/config?apiKey="+ed_Api.getText().toString();
-        Log.e("LoginUrl",url);
-        StringRequest request = new StringRequest(
+        String brightness = "http://"+ed_ipAddress.getText().toString()+":8080/api/brightness?apiKey="+ed_Api.getText().toString();
+        StringRequest display = new StringRequest(
                 Request.Method.GET,
-                url,
+                brightness,
                 response -> {
                     try {
-                        JSONObject array = new JSONObject(response);
-                        isVerifySkyMoon = array.getBoolean("success");
-                        Log.e("LOGIN_API",isVerifySkyMoon+"");
+                        JSONObject obj = new JSONObject(response);
+                        bright = obj.getInt("result");
+                        Log.e("LOGIN_BRIGHTNESS",bright+"");
 
                         //sunLite 에 대한 volley 작성해야함
                         Intent in = new Intent(getApplicationContext(), MainActivity.class);
@@ -92,10 +94,31 @@ public class LoginActivity extends AppCompatActivity {
                         in.putExtra("apiKey",ed_Api.getText().toString());
                         in.putExtra("isVerifySunLite",isVerifySunLite);
                         in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
+                        in.putExtra("brightness",bright);
                         startActivity(in);
                         Animatoo.animateSlideLeft(this);
                         myProgressDialog.dismiss();
                         finish();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                },
+                null
+        );
+        Log.e("LoginUrl",url);
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,
+                response -> {
+                    queue.add(display);
+                    try {
+                        JSONObject array = new JSONObject(response);
+                        isVerifySkyMoon = array.getBoolean("success");
+                        Log.e("LOGIN_API",isVerifySkyMoon+"");
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -107,6 +130,8 @@ public class LoginActivity extends AppCompatActivity {
                     in.putExtra("apiKey",ed_Api.getText().toString());
                     in.putExtra("isVerifySunLite",isVerifySunLite);
                     in.putExtra("isVerifySkyMoon",isVerifySkyMoon);
+                    in.putExtra("brightness",-1);
+
                     startActivity(in);
                     Animatoo.animateSlideLeft(this);
                     myProgressDialog.dismiss();

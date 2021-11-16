@@ -35,6 +35,7 @@ import com.lovehp30.mirrorcontrol.main.topics.ListTopicItem;
 public class MainActivity extends AppCompatActivity {
     public static boolean isVerifySunLite,isVerifySkyMoon;
     String ip,key;
+    int bright;
     ActionBar actionBar;
     DrawerLayout drawer;
     FloatingActionButton fab;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         key = bundle.getString("apiKey");
         isVerifySkyMoon = bundle.getBoolean("isVerifySkyMoon");
         isVerifySunLite = bundle.getBoolean("isVerifySunLite");
+        bright = bundle.getInt("brightness");
         Log.e("Main",isVerifySkyMoon+"  "+isVerifySunLite);
         //toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         });
         //pager
         ViewPager2 pager2 = findViewById(R.id.viewPager);
-        MainActViewAdapter adapter=new MainActViewAdapter(ip,key,getSupportFragmentManager(),getLifecycle());
+        MainActViewAdapter adapter=new MainActViewAdapter(bright,ip,key,getSupportFragmentManager(),getLifecycle());
         pager2.setAdapter(adapter);
         pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
